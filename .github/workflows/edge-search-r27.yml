@@ -13,6 +13,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pandas numpy requests
+      - run: sed -i "s/\.view('int64')/\.astype('int64')/g" edge_search_round27.py
       - run: python edge_search_round27.py | tee edge_search_r27.log
       - uses: actions/upload-artifact@v4
         with:
