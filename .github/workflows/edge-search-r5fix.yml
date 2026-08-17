@@ -1,0 +1,26 @@
+name: Edge Search Round 5 Fix
+on:
+  push:
+    branches: [edge-search-r5fix]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - name: Run fixed volume profile search
+        run: python edge_search_round5fix.py | tee edge_search_r5fix.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edge-search-round5fix-results
+          path: |
+            r5f_output/
+            edge_search_r5fix.log
+          retention-days: 7
