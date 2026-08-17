@@ -1,0 +1,24 @@
+name: Edge Regime Pullback
+on:
+  push:
+    branches: [edge-regime-pullback]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python edge_regime_pullback.py | tee edge_regime_pullback.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edge-regime-pullback-results
+          path: |
+            rp_output/
+            edge_regime_pullback.log
+          retention-days: 7
