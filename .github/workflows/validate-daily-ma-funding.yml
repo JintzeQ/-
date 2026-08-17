@@ -1,0 +1,24 @@
+name: Validate Daily MA Funding
+on:
+  push:
+    branches: [validate-daily-ma-funding]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python validate_daily_ma_funding.py | tee validate_daily_ma_funding.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-daily-ma-funding-results
+          path: |
+            vmf_output/
+            validate_daily_ma_funding.log
+          retention-days: 7
