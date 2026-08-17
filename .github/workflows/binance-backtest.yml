@@ -1,0 +1,30 @@
+name: Binance 1m EV Backtest
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run Binance 1m backtest
+        run: python github_backtest_runner.py | tee backtest.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: binance-1m-backtest-results
+          path: |
+            output/
+            backtest.log
+          retention-days: 7
