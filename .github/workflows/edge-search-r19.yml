@@ -1,0 +1,23 @@
+name: Edge Search Round 19
+on:
+  push:
+    branches: [edge-search-r19]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python edge_search_round19.py | tee edge_search_r19.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: edge-search-round19-results
+          path: |
+            r19_output/
+            edge_search_r19.log
+          retention-days: 7
