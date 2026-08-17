@@ -1,0 +1,24 @@
+name: Validate Funding Spread Broad
+on:
+  push:
+    branches: [validate-funding-spread-broad]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python validate_funding_spread_broad.py | tee validate_funding_spread_broad.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-funding-spread-broad-results
+          path: |
+            vfb_output/
+            validate_funding_spread_broad.log
+          retention-days: 7
