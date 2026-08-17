@@ -1,0 +1,24 @@
+name: Edge Search Carry Archive
+on:
+  push:
+    branches: [edge-search-carry-archive]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python edge_search_carry_archive.py | tee edge_search_carry_archive.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edge-search-carry-archive-results
+          path: |
+            carry_output/
+            edge_search_carry_archive.log
+          retention-days: 7
