@@ -1,0 +1,23 @@
+name: Validate Frozen 90d Carry
+on:
+  push:
+    branches: [edge-validate-r26]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python validate_r26.py | tee validate_r26.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validate-r26-results
+          path: |
+            r26_output/
+            validate_r26.log
+          retention-days: 7
