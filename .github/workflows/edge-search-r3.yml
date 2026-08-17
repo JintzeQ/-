@@ -1,0 +1,26 @@
+name: Edge Search Round 3
+on:
+  push:
+    branches: [edge-search-r3]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - name: Run quarter-hour search
+        run: python edge_search_round3.py | tee edge_search_r3.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: edge-search-round3-results
+          path: |
+            r3_output/
+            edge_search_r3.log
+          retention-days: 7
