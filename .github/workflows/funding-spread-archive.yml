@@ -1,0 +1,24 @@
+name: Funding Spread Archive
+on:
+  push:
+    branches: [edge-search-funding-spread-archive]
+  workflow_dispatch:
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python funding_spread_archive.py | tee funding_spread_archive.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: funding-spread-archive-results
+          path: |
+            fsp_output/
+            funding_spread_archive.log
+          retention-days: 7
