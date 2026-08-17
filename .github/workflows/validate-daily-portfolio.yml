@@ -1,0 +1,24 @@
+name: Validate Daily Portfolio
+on:
+  push:
+    branches: [validate-daily-portfolio]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python validate_daily_portfolio.py | tee validate_daily_portfolio.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-daily-portfolio-results
+          path: |
+            vdp_output/
+            validate_daily_portfolio.log
+          retention-days: 7
