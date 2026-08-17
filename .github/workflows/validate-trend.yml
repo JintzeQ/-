@@ -1,0 +1,24 @@
+name: Validate Trend Survivor
+on:
+  push:
+    branches: [edge-validate-trend]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pandas numpy requests
+      - run: python validate_trend.py | tee validate_trend.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validate-trend-results
+          path: |
+            val_output/
+            validate_trend.log
+          retention-days: 7
