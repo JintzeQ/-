@@ -1,0 +1,29 @@
+name: Quick Binance 1m EV Backtest
+
+on:
+  push:
+    branches: [quick-backtest]
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run quick cross-year backtest
+        run: python quick_runner.py | tee quick_backtest.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quick-binance-1m-backtest-results
+          path: |
+            quick_output/
+            quick_backtest.log
+          retention-days: 7
