@@ -1,17 +1,26 @@
 [
   {
-    "symbol": "FETUSDT",
-    "status": 451,
-    "body": "{\n  \"code\": 0,\n  \"msg\": \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this message in error.\"\n}"
+    "kind": "bookTicker",
+    "status": 200,
+    "bytes": 11057531,
+    "name": "WOOUSDT-bookTicker-2024-03-29.csv",
+    "first_lines": [
+      "update_id,best_bid_price,best_bid_qty,best_ask_price,best_ask_qty,transaction_time,event_time",
+      "4300610510894,0.46353000,113.00000000,0.46359000,100.00000000,1711670400028,1711670400037",
+      "4300613560214,0.46353000,13.00000000,0.46359000,100.00000000,1711670404400,1711670406787",
+      "4300613562001,0.46353000,157.00000000,0.46359000,100.00000000,1711670404405,1711670406791"
+    ]
   },
   {
-    "symbol": "OPUSDT",
-    "status": 451,
-    "body": "{\n  \"code\": 0,\n  \"msg\": \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this message in error.\"\n}"
-  },
-  {
-    "symbol": "WIFUSDT",
-    "status": 451,
-    "body": "{\n  \"code\": 0,\n  \"msg\": \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this message in error.\"\n}"
+    "kind": "aggTrades",
+    "status": 200,
+    "bytes": 1479829,
+    "name": "WOOUSDT-aggTrades-2024-03-29.csv",
+    "first_lines": [
+      "agg_trade_id,price,quantity,first_trade_id,last_trade_id,transact_time,is_buyer_maker",
+      "95118377,0.46353,170.0,157814179,157814181,1711670404574,true",
+      "95118378,0.46353,48.0,157814182,157814182,1711670404791,false",
+      "95118379,0.46347,100.0,157814183,157814183,1711670406060,false"
+    ]
   }
 ]
