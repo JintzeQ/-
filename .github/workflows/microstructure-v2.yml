@@ -1,0 +1,55 @@
+name: Microstructure V2 After-Fee Screen
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'microstructure_v2.py'
+      - '.github/workflows/microstructure-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run after-fee microstructure screen
+        run: python microstructure_v2.py | tee microstructure_v2.log
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f microstructure_v2_output/summary.md ]; then
+            cat microstructure_v2_output/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: microstructure-v2-results
+          path: |
+            microstructure_v2_output/
+            microstructure_v2.log
+          retention-days: 7
+      - name: Commit compact results
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add microstructure_v2_output/summary.md \
+                  microstructure_v2_output/ranked_after_fee.csv \
+                  microstructure_v2_output/robust_plus1bp.csv \
+                  microstructure_v2_output/all_oos.csv \
+                  microstructure_v2_output/BTCUSDT_selected_train.csv \
+                  microstructure_v2_output/ETHUSDT_selected_train.csv \
+                  microstructure_v2_output/SOLUSDT_selected_train.csv
+          git commit -m "Add microstructure v2 after-fee results [skip ci]" || exit 0
+          git push
