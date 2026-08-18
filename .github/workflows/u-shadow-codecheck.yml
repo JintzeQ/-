@@ -9,6 +9,8 @@ on:
       - 'U_SHADOW_README.md'
       - '.github/workflows/u-shadow-codecheck.yml'
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -24,3 +26,12 @@ jobs:
         run: python u_shadow_analyzer.py --help
       - name: Synthetic queue-model test
         run: python u_shadow_selftest.py
+      - name: Persist PASS marker
+        run: |
+          printf 'PASS\ncommit=%s\nutc=%s\n' "$GITHUB_SHA" "$(date -u +%FT%TZ)" > u_shadow_codecheck_status.txt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add u_shadow_codecheck_status.txt
+          git diff --cached --quiet || git commit -m 'U shadow codecheck PASS [skip ci]'
+          git push
