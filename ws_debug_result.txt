@@ -1,51 +1,144 @@
 [
   {
-    "stream": "fetusdt@aggTrade",
+    "route": "legacy_raw",
+    "url": "wss://fstream.binance.com/ws/woousdt@aggTrade",
     "n": 0,
     "samples": []
   },
   {
-    "stream": "fetusdt@bookTicker",
-    "n": 29,
+    "route": "public_raw",
+    "url": "wss://fstream.binance.com/public/ws/woousdt@aggTrade",
+    "n": 0,
+    "samples": []
+  },
+  {
+    "route": "public_combined",
+    "url": "wss://fstream.binance.com/public/stream?streams=woousdt@aggTrade/woousdt@bookTicker",
+    "n": 8,
     "samples": [
       {
-        "e": "bookTicker",
-        "u": 11309561490634,
-        "s": "FETUSDT",
-        "ps": "FETUSDT",
-        "b": "0.1213000",
-        "B": "41891",
-        "a": "0.1214000",
-        "A": "92967",
-        "T": 1787020348795,
-        "E": 1787020348795,
+        "stream": "woousdt@bookTicker",
+        "data": {
+          "e": "bookTicker",
+          "u": 11309810200985,
+          "s": "WOOUSDT",
+          "ps": "WOOUSDT",
+          "b": "0.01022",
+          "B": "13173",
+          "a": "0.01023",
+          "A": "112172",
+          "T": 1787022455095,
+          "E": 1787022455095,
+          "st": 1
+        }
+      },
+      {
+        "stream": "woousdt@bookTicker",
+        "data": {
+          "e": "bookTicker",
+          "u": 11309810201403,
+          "s": "WOOUSDT",
+          "ps": "WOOUSDT",
+          "b": "0.01022",
+          "B": "13173",
+          "a": "0.01023",
+          "A": "118943",
+          "T": 1787022455100,
+          "E": 1787022455100,
+          "st": 1
+        }
+      },
+      {
+        "stream": "woousdt@bookTicker",
+        "data": {
+          "e": "bookTicker",
+          "u": 11309810272330,
+          "s": "WOOUSDT",
+          "ps": "WOOUSDT",
+          "b": "0.01022",
+          "B": "10685",
+          "a": "0.01023",
+          "A": "118943",
+          "T": 1787022455817,
+          "E": 1787022455817,
+          "st": 1
+        }
+      }
+    ]
+  },
+  {
+    "route": "market_raw",
+    "url": "wss://fstream.binance.com/market/ws/woousdt@aggTrade",
+    "n": 2,
+    "samples": [
+      {
+        "e": "aggTrade",
+        "E": 1787022455970,
+        "a": 141721130,
+        "s": "WOOUSDT",
+        "p": "0.01022",
+        "q": "2488",
+        "nq": "2488",
+        "f": 246759618,
+        "l": 246759618,
+        "T": 1787022455817,
+        "m": true,
         "st": 1
       },
       {
-        "e": "bookTicker",
-        "u": 11309561504837,
-        "s": "FETUSDT",
-        "ps": "FETUSDT",
-        "b": "0.1213000",
-        "B": "41891",
-        "a": "0.1214000",
-        "A": "94315",
-        "T": 1787020348944,
-        "E": 1787020348944,
+        "e": "aggTrade",
+        "E": 1787022464235,
+        "a": 141721131,
+        "s": "WOOUSDT",
+        "p": "0.01022",
+        "q": "513",
+        "nq": "513",
+        "f": 246759619,
+        "l": 246759619,
+        "T": 1787022464081,
+        "m": true,
         "st": 1
+      }
+    ]
+  },
+  {
+    "route": "market_combined",
+    "url": "wss://fstream.binance.com/market/stream?streams=woousdt@aggTrade/woousdt@bookTicker",
+    "n": 2,
+    "samples": [
+      {
+        "stream": "woousdt@aggTrade",
+        "data": {
+          "e": "aggTrade",
+          "E": 1787022455970,
+          "a": 141721130,
+          "s": "WOOUSDT",
+          "p": "0.01022",
+          "q": "2488",
+          "nq": "2488",
+          "f": 246759618,
+          "l": 246759618,
+          "T": 1787022455817,
+          "m": true,
+          "st": 1
+        }
       },
       {
-        "e": "bookTicker",
-        "u": 11309561609301,
-        "s": "FETUSDT",
-        "ps": "FETUSDT",
-        "b": "0.1213000",
-        "B": "41817",
-        "a": "0.1214000",
-        "A": "94315",
-        "T": 1787020349837,
-        "E": 1787020349838,
-        "st": 1
+        "stream": "woousdt@aggTrade",
+        "data": {
+          "e": "aggTrade",
+          "E": 1787022464235,
+          "a": 141721131,
+          "s": "WOOUSDT",
+          "p": "0.01022",
+          "q": "513",
+          "nq": "513",
+          "f": 246759619,
+          "l": 246759619,
+          "T": 1787022464081,
+          "m": true,
+          "st": 1
+        }
       }
     ]
   }
