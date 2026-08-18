@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install pandas numpy requests
+      - run: pip install pandas numpy requests tabulate
       - run: python maker_historical_v5.py
       - uses: actions/upload-artifact@v4
         with:
