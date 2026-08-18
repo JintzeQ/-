@@ -1,0 +1,32 @@
+name: FET OP WIF Maker V9
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_live_v9.py'
+      - '.github/workflows/maker-live-v9.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets numpy pandas tabulate
+      - run: python maker_live_v9.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-live-v9
+          path: maker_live_v9_output/
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_live_v9_output/
+          git diff --cached --quiet || git commit -m 'Add FET OP WIF maker v9 results [skip ci]'
+          git push
