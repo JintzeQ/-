@@ -1,0 +1,36 @@
+name: USDC Turnover First Maker Sweep
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'usdc_turnover_sweep.py'
+      - '.github/workflows/usdc-turnover-sweep.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets requests pandas numpy tabulate
+      - run: python usdc_turnover_sweep.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: usdc-turnover-first
+          path: usdc_turnover_output/
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add usdc_turnover_output/
+          git diff --cached --quiet || git commit -m 'Add USDC turnover-first results [skip ci]'
+          git push
