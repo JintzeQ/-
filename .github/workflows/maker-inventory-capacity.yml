@@ -1,0 +1,27 @@
+name: GALA Locked Maker Capacity
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_inventory_capacity.py'
+      - '.github/workflows/maker-inventory-capacity.yml'
+permissions:
+  contents: write
+jobs:
+  capacity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_inventory_capacity.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_inventory_capacity_output/
+          git diff --cached --quiet || git commit -m 'Add GALA locked-maker capacity results [skip ci]'
+          git push
