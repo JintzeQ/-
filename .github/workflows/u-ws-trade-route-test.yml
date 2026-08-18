@@ -25,3 +25,4 @@ jobs:
           git add u_ws_trade_route_output/
           git diff --cached --quiet || git commit -m 'Add BTCU raw trade route results [skip ci]'
           git push
+# Trigger only.
