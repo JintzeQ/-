@@ -25,3 +25,4 @@ jobs:
           git add u_vision_probe_output/
           git diff --cached --quiet || git commit -m 'Add U Vision probe results [skip ci]'
           git push
+# Trigger only.
