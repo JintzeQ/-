@@ -5,6 +5,7 @@ on:
     paths:
       - 'u_shadow_recorder.py'
       - 'u_shadow_analyzer.py'
+      - 'u_shadow_selftest.py'
       - 'U_SHADOW_README.md'
       - '.github/workflows/u-shadow-codecheck.yml'
   workflow_dispatch:
@@ -18,7 +19,8 @@ jobs:
           python-version: '3.11'
       - run: pip install requests websockets pandas numpy tabulate
       - name: Compile
-        run: python -m py_compile u_shadow_recorder.py u_shadow_analyzer.py
+        run: python -m py_compile u_shadow_recorder.py u_shadow_analyzer.py u_shadow_selftest.py
       - name: Analyzer CLI smoke test
         run: python u_shadow_analyzer.py --help
-# Trigger-only change; no strategy logic changed.
+      - name: Synthetic queue-model test
+        run: python u_shadow_selftest.py
