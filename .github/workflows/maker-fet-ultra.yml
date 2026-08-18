@@ -1,0 +1,24 @@
+name: FET Maker Ultra Check
+on:
+  push:
+    branches: [main]
+    paths: ['maker_fet_ultra.py','.github/workflows/maker-fet-ultra.yml']
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install pandas numpy requests tabulate
+      - run: python maker_fet_ultra.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_fet_ultra_output/
+          git diff --cached --quiet || git commit -m 'Add FET maker ultra results [skip ci]'
+          git push
