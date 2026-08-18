@@ -1,0 +1,60 @@
+name: Binance Microstructure Alpha Backtest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'microstructure_backtest.py'
+      - '.github/workflows/microstructure-main.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run BTCUSDT microstructure pilot
+        run: |
+          python microstructure_backtest.py \
+            --symbol BTCUSDT \
+            --start 2026-08-10 \
+            --end 2026-08-16 \
+            --train-end 2026-08-13 \
+            --bin-ms 500 \
+            --out microstructure_output | tee microstructure.log
+      - name: Publish job summary
+        if: always()
+        run: |
+          if [ -f microstructure_output/summary.md ]; then
+            cat microstructure_output/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: btcusdt-microstructure-results
+          path: |
+            microstructure_output/
+            microstructure.log
+          retention-days: 7
+      - name: Commit compact results to repository
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add microstructure_output/summary.md \
+                  microstructure_output/metrics.csv \
+                  microstructure_output/daily_oos.csv \
+                  microstructure_output/footprint.csv \
+                  microstructure_output/thresholds.json
+          git commit -m "Add microstructure backtest results [skip ci]" || exit 0
+          git push
