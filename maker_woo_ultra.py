@@ -1,10 +1,39 @@
-import os
+import io, os
+import numpy as np
 import pandas as pd
 import maker_historical_v5 as m
 
 OUT='maker_woo_ultra_output'; os.makedirs(OUT,exist_ok=True)
 S='WOOUSDT'; D='2024-03-29'
-b,t=m.read_book(S,D),m.read_trades(S,D)
+
+def read_trades_fixed(symbol,day):
+    raw=m.get_zip('aggTrades',symbol,day)
+    df=pd.read_csv(io.BytesIO(raw))
+    low={c:str(c).lower().strip() for c in df.columns}
+    if not any(v=='price' for v in low.values()):
+        df=pd.read_csv(io.BytesIO(raw),header=None).iloc[:,:7]
+        df.columns=['agg_id','price','qty','first_id','last_id','timestamp','buyer_maker']
+    else:
+        rename={}
+        for c,lc in low.items():
+            if lc=='price': rename[c]='price'
+            elif lc in ('quantity','qty'): rename[c]='qty'
+            elif lc in ('timestamp','time','transact_time','transaction_time') or (lc.endswith('_time') and 'buyer' not in lc): rename[c]='timestamp'
+            elif 'buyer' in lc and 'maker' in lc: rename[c]='buyer_maker'
+        df=df.rename(columns=rename)
+        if 'buyer_maker' not in df.columns and len(df.columns)>=7: df=df.rename(columns={df.columns[6]:'buyer_maker'})
+    for c in ['price','qty','timestamp']: df[c]=pd.to_numeric(df[c],errors='coerce')
+    df=df.dropna(subset=['price','qty','timestamp']).copy()
+    if df['buyer_maker'].dtype==bool:
+        pass
+    else:
+        df['buyer_maker']=df['buyer_maker'].astype(str).str.lower().isin(['true','1','t'])
+    df['ts']=df.timestamp.astype(np.int64)
+    return df[['ts','price','qty','buyer_maker']].sort_values('ts').reset_index(drop=True)
+
+print('loading WOO historical L1 + aggTrades',flush=True)
+b=m.read_book(S,D); t=read_trades_fixed(S,D)
+print('rows',len(b),len(t),flush=True)
 start=max(int(b.ts.min()),int(t.ts.min())); cut1=start+2*3600_000; cut2=start+4*3600_000
 bt=b[(b.ts>=start)&(b.ts<cut1)].reset_index(drop=True); tt=t[(t.ts>=start)&(t.ts<cut1)].reset_index(drop=True)
 bo=b[(b.ts>=cut1)&(b.ts<cut2)].reset_index(drop=True); to=t[(t.ts>=cut1)&(t.ts<cut2)].reset_index(drop=True)
