@@ -1,0 +1,23 @@
+name: U Shadow Recorder Code Check
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'u_shadow_recorder.py'
+      - 'u_shadow_analyzer.py'
+      - 'U_SHADOW_README.md'
+      - '.github/workflows/u-shadow-codecheck.yml'
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests websockets pandas numpy tabulate
+      - name: Compile
+        run: python -m py_compile u_shadow_recorder.py u_shadow_analyzer.py
+      - name: Analyzer CLI smoke test
+        run: python u_shadow_analyzer.py --help
