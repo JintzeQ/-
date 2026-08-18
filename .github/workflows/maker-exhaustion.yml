@@ -1,0 +1,27 @@
+name: Sweep Exhaustion Maker Screen
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_exhaustion_screen.py'
+      - '.github/workflows/maker-exhaustion.yml'
+permissions:
+  contents: write
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_exhaustion_screen.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_exhaustion_output/
+          git diff --cached --quiet || git commit -m 'Add sweep exhaustion maker results [skip ci]'
+          git push
