@@ -1,0 +1,2 @@
+symbol,maker_fills,quote_attempts,maker_volume_usd,liquidation_volume_usd,total_volume_usd,liquidation_share,gross_cash_pnl,fees_usd,net_pnl_usd,net_bp_per_volume,max_inventory_usd
+GALAUSDT,1,146,499.99999999999994,499.6408045977012,999.6408045977012,0.49982033776500184,-0.35919540229878066,0.3498204022988506,-0.7090158045976312,-7.092705713258374,500.8979885057471
