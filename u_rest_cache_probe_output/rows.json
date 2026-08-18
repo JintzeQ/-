@@ -1,0 +1,1202 @@
+[
+  {
+    "k": 0,
+    "host": "https://fapi.binance.com",
+    "limit": 1000,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 0,
+    "host": "https://fapi1.binance.com",
+    "limit": 987,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 0,
+    "host": "https://fapi2.binance.com",
+    "limit": 974,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 0,
+    "host": "https://fapi3.binance.com",
+    "limit": 961,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 1,
+    "host": "https://fapi.binance.com",
+    "limit": 993,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 1,
+    "host": "https://fapi1.binance.com",
+    "limit": 980,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 1,
+    "host": "https://fapi2.binance.com",
+    "limit": 967,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 1,
+    "host": "https://fapi3.binance.com",
+    "limit": 954,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 2,
+    "host": "https://fapi.binance.com",
+    "limit": 986,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 2,
+    "host": "https://fapi1.binance.com",
+    "limit": 973,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 2,
+    "host": "https://fapi2.binance.com",
+    "limit": 960,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 2,
+    "host": "https://fapi3.binance.com",
+    "limit": 947,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 3,
+    "host": "https://fapi.binance.com",
+    "limit": 979,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 3,
+    "host": "https://fapi1.binance.com",
+    "limit": 966,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 3,
+    "host": "https://fapi2.binance.com",
+    "limit": 953,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 3,
+    "host": "https://fapi3.binance.com",
+    "limit": 940,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 4,
+    "host": "https://fapi.binance.com",
+    "limit": 972,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 4,
+    "host": "https://fapi1.binance.com",
+    "limit": 959,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 4,
+    "host": "https://fapi2.binance.com",
+    "limit": 946,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 4,
+    "host": "https://fapi3.binance.com",
+    "limit": 933,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 5,
+    "host": "https://fapi.binance.com",
+    "limit": 965,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 5,
+    "host": "https://fapi1.binance.com",
+    "limit": 952,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 5,
+    "host": "https://fapi2.binance.com",
+    "limit": 939,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 5,
+    "host": "https://fapi3.binance.com",
+    "limit": 926,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 6,
+    "host": "https://fapi.binance.com",
+    "limit": 958,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 6,
+    "host": "https://fapi1.binance.com",
+    "limit": 945,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 6,
+    "host": "https://fapi2.binance.com",
+    "limit": 932,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 6,
+    "host": "https://fapi3.binance.com",
+    "limit": 919,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 7,
+    "host": "https://fapi.binance.com",
+    "limit": 951,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 7,
+    "host": "https://fapi1.binance.com",
+    "limit": 938,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 7,
+    "host": "https://fapi2.binance.com",
+    "limit": 925,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 7,
+    "host": "https://fapi3.binance.com",
+    "limit": 912,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 8,
+    "host": "https://fapi.binance.com",
+    "limit": 944,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 8,
+    "host": "https://fapi1.binance.com",
+    "limit": 931,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 8,
+    "host": "https://fapi2.binance.com",
+    "limit": 918,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 8,
+    "host": "https://fapi3.binance.com",
+    "limit": 905,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 9,
+    "host": "https://fapi.binance.com",
+    "limit": 937,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 9,
+    "host": "https://fapi1.binance.com",
+    "limit": 924,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 9,
+    "host": "https://fapi2.binance.com",
+    "limit": 911,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 9,
+    "host": "https://fapi3.binance.com",
+    "limit": 995,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 10,
+    "host": "https://fapi.binance.com",
+    "limit": 930,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 10,
+    "host": "https://fapi1.binance.com",
+    "limit": 917,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 10,
+    "host": "https://fapi2.binance.com",
+    "limit": 904,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 10,
+    "host": "https://fapi3.binance.com",
+    "limit": 988,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 11,
+    "host": "https://fapi.binance.com",
+    "limit": 923,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 11,
+    "host": "https://fapi1.binance.com",
+    "limit": 910,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 11,
+    "host": "https://fapi2.binance.com",
+    "limit": 994,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 11,
+    "host": "https://fapi3.binance.com",
+    "limit": 981,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 12,
+    "host": "https://fapi.binance.com",
+    "limit": 916,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 12,
+    "host": "https://fapi1.binance.com",
+    "limit": 1000,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 12,
+    "host": "https://fapi2.binance.com",
+    "limit": 987,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 12,
+    "host": "https://fapi3.binance.com",
+    "limit": 974,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 13,
+    "host": "https://fapi.binance.com",
+    "limit": 909,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 13,
+    "host": "https://fapi1.binance.com",
+    "limit": 993,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 13,
+    "host": "https://fapi2.binance.com",
+    "limit": 980,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 13,
+    "host": "https://fapi3.binance.com",
+    "limit": 967,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 14,
+    "host": "https://fapi.binance.com",
+    "limit": 999,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 14,
+    "host": "https://fapi1.binance.com",
+    "limit": 986,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 14,
+    "host": "https://fapi2.binance.com",
+    "limit": 973,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 14,
+    "host": "https://fapi3.binance.com",
+    "limit": 960,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 15,
+    "host": "https://fapi.binance.com",
+    "limit": 992,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 15,
+    "host": "https://fapi1.binance.com",
+    "limit": 979,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 15,
+    "host": "https://fapi2.binance.com",
+    "limit": 966,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 15,
+    "host": "https://fapi3.binance.com",
+    "limit": 953,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 16,
+    "host": "https://fapi.binance.com",
+    "limit": 985,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 16,
+    "host": "https://fapi1.binance.com",
+    "limit": 972,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 16,
+    "host": "https://fapi2.binance.com",
+    "limit": 959,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 16,
+    "host": "https://fapi3.binance.com",
+    "limit": 946,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 17,
+    "host": "https://fapi.binance.com",
+    "limit": 978,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 17,
+    "host": "https://fapi1.binance.com",
+    "limit": 965,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 17,
+    "host": "https://fapi2.binance.com",
+    "limit": 952,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 17,
+    "host": "https://fapi3.binance.com",
+    "limit": 939,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 18,
+    "host": "https://fapi.binance.com",
+    "limit": 971,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 18,
+    "host": "https://fapi1.binance.com",
+    "limit": 958,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 18,
+    "host": "https://fapi2.binance.com",
+    "limit": 945,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 18,
+    "host": "https://fapi3.binance.com",
+    "limit": 932,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 19,
+    "host": "https://fapi.binance.com",
+    "limit": 964,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 19,
+    "host": "https://fapi1.binance.com",
+    "limit": 951,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 19,
+    "host": "https://fapi2.binance.com",
+    "limit": 938,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 19,
+    "host": "https://fapi3.binance.com",
+    "limit": 925,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 20,
+    "host": "https://fapi.binance.com",
+    "limit": 957,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 20,
+    "host": "https://fapi1.binance.com",
+    "limit": 944,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 20,
+    "host": "https://fapi2.binance.com",
+    "limit": 931,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 20,
+    "host": "https://fapi3.binance.com",
+    "limit": 918,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 21,
+    "host": "https://fapi.binance.com",
+    "limit": 950,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 21,
+    "host": "https://fapi1.binance.com",
+    "limit": 937,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 21,
+    "host": "https://fapi2.binance.com",
+    "limit": 924,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 21,
+    "host": "https://fapi3.binance.com",
+    "limit": 911,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 22,
+    "host": "https://fapi.binance.com",
+    "limit": 943,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 22,
+    "host": "https://fapi1.binance.com",
+    "limit": 930,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 22,
+    "host": "https://fapi2.binance.com",
+    "limit": 917,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 22,
+    "host": "https://fapi3.binance.com",
+    "limit": 904,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 23,
+    "host": "https://fapi.binance.com",
+    "limit": 936,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 23,
+    "host": "https://fapi1.binance.com",
+    "limit": 923,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 23,
+    "host": "https://fapi2.binance.com",
+    "limit": 910,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 23,
+    "host": "https://fapi3.binance.com",
+    "limit": 994,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 24,
+    "host": "https://fapi.binance.com",
+    "limit": 929,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 24,
+    "host": "https://fapi1.binance.com",
+    "limit": 916,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 24,
+    "host": "https://fapi2.binance.com",
+    "limit": 1000,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 24,
+    "host": "https://fapi3.binance.com",
+    "limit": 987,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 25,
+    "host": "https://fapi.binance.com",
+    "limit": 922,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 25,
+    "host": "https://fapi1.binance.com",
+    "limit": 909,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 25,
+    "host": "https://fapi2.binance.com",
+    "limit": 993,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 25,
+    "host": "https://fapi3.binance.com",
+    "limit": 980,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 26,
+    "host": "https://fapi.binance.com",
+    "limit": 915,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 26,
+    "host": "https://fapi1.binance.com",
+    "limit": 999,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 26,
+    "host": "https://fapi2.binance.com",
+    "limit": 986,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 26,
+    "host": "https://fapi3.binance.com",
+    "limit": 973,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 27,
+    "host": "https://fapi.binance.com",
+    "limit": 908,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 27,
+    "host": "https://fapi1.binance.com",
+    "limit": 992,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 27,
+    "host": "https://fapi2.binance.com",
+    "limit": 979,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 27,
+    "host": "https://fapi3.binance.com",
+    "limit": 966,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 28,
+    "host": "https://fapi.binance.com",
+    "limit": 998,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 28,
+    "host": "https://fapi1.binance.com",
+    "limit": 985,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 28,
+    "host": "https://fapi2.binance.com",
+    "limit": 972,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 28,
+    "host": "https://fapi3.binance.com",
+    "limit": 959,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 29,
+    "host": "https://fapi.binance.com",
+    "limit": 991,
+    "status": 451,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "{'code': 0, 'msg': \"Service unavailable from a restricted location according to 'b. Eligibility' in https://www.binance.com/en/terms. Please contact customer service if you believe you received this m"
+  },
+  {
+    "k": 29,
+    "host": "https://fapi1.binance.com",
+    "limit": 978,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 29,
+    "host": "https://fapi2.binance.com",
+    "limit": 965,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  },
+  {
+    "k": 29,
+    "host": "https://fapi3.binance.com",
+    "limit": 952,
+    "status": null,
+    "n": 0,
+    "max_id": -1,
+    "max_time": -1,
+    "err": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+  }
+]
