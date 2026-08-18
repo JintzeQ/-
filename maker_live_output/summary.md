@@ -10,9 +10,9 @@
 
 | symbol | book events | trades | median spread bp | p75 | p90 |
 |---|---:|---:|---:|---:|---:|
-| 4USDT | 305 | 0 | 10.67 | 13.33 | 14.23 |
-| PTBUSDT | 615 | 0 | 8.25 | 10.60 | 12.96 |
-| BBUSDT | 402 | 0 | 9.36 | 18.71 | 18.74 |
+| 4USDT | 371 | 0 | 8.82 | 13.22 | 14.14 |
+| PTBUSDT | 437 | 0 | 14.04 | 15.21 | 16.39 |
+| BBUSDT | 292 | 0 | 18.67 | 18.67 | 18.67 |
 
 ## Net-positive completed-cycle configurations
 
