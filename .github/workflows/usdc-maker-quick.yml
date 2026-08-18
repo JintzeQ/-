@@ -1,4 +1,5 @@
 name: USDC Maker Quick Probe
+# trigger prospective quick capture
 
 on:
   push:
