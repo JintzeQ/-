@@ -1,0 +1,3 @@
+symbol,maker_fills,quote_attempts,maker_volume_usd,liquidation_volume_usd,total_volume_usd,liquidation_share,gross_cash_pnl,fees_usd,net_pnl_usd,net_bp_per_volume,max_inventory_usd
+GALAUSDT,0,0,0.0,0.0,0.0,,0.0,0.0,0.0,,0.0
+IMXUSDT,0,0,0.0,0.0,0.0,,0.0,0.0,0.0,,0.0
