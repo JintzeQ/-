@@ -1,0 +1,8 @@
+metric,value
+strong_flow_next_same_sign_prob,0.8530479648385247
+all_flow_next_same_sign_prob,0.7527119868702343
+fi1_autocorr_0.5s,0.503255893548042
+fi1_autocorr_1s,0.15952466038972812
+fi1_autocorr_2.5s,0.1579480491368029
+fi1_autocorr_5s,0.15257585678829333
+fi1_autocorr_10s,0.14883931131983585
