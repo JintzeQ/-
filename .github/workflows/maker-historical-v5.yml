@@ -1,0 +1,35 @@
+name: Historical Wide-Tick Maker V5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_historical_v5.py'
+      - '.github/workflows/maker-historical-v5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy requests
+      - run: python maker_historical_v5.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-historical-v5
+          path: maker_historical_v5_output/
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add maker_historical_v5_output/
+          git diff --cached --quiet || git commit -m 'Add historical maker v5 results [skip ci]'
+          git push
