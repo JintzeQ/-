@@ -33,7 +33,7 @@ streams='/'.join(f'{s.lower()}@bookTicker' for s in SYMBOLS)
 BOOK_URL=WS_BASE+streams
 stop_event=asyncio.Event()
 session=requests.Session()
-session.headers.update({'User-Agent':'u-shadow-recorder/1.0','Cache-Control':'no-cache','Pragma':'no-cache'})
+session.headers.update({'User-Agent':'u-shadow-recorder/1.1','Cache-Control':'no-cache','Pragma':'no-cache'})
 
 
 def now_wall_ns(): return time.time_ns()
@@ -76,7 +76,7 @@ def init_db():
     meta={
       'symbols':','.join(SYMBOLS),'book_url':BOOK_URL,'rest_base':REST_BASE,
       'trade_poll_seconds':str(POLL_SECONDS),'started_wall_ns':str(now_wall_ns()),
-      'recorder_version':'1.0','purpose':'shadow_only_no_orders'
+      'recorder_version':'1.1','purpose':'shadow_only_no_orders'
     }
     con.executemany('INSERT OR REPLACE INTO meta(key,value) VALUES(?,?)',meta.items())
     con.commit(); return con
@@ -118,6 +118,8 @@ async def book_loop(q):
                     if s in SYMBOLS and all(k in d for k in ('b','B','a','A')):
                         ex=int(d.get('T',d.get('E',rw//1_000_000)))
                         await q.put(('bbo',(s,ex,rw,rm,float(d['b']),float(d['B']),float(d['a']),float(d['A']))))
+        except asyncio.CancelledError:
+            raise
         except Exception as e:
             await q.put(('meta',('last_book_error',repr(e))))
             await asyncio.sleep(backoff); backoff=min(backoff*2,15)
@@ -162,11 +164,13 @@ async def clock_loop(q):
 async def writer_loop(q):
     con=init_db(); last_commit=time.monotonic(); counts=defaultdict(int)
     try:
-        while not (stop_event.is_set() and q.empty()):
+        while True:
             try: kind,row=await asyncio.wait_for(q.get(),timeout=.5)
             except asyncio.TimeoutError:
                 if time.monotonic()-last_commit>=COMMIT_SECONDS: con.commit(); last_commit=time.monotonic()
                 continue
+            if kind=='stop':
+                q.task_done(); break
             if kind=='bbo': con.execute('INSERT INTO bbo(symbol,exchange_ms,recv_wall_ns,recv_mono_ns,bid,bid_qty,ask,ask_qty) VALUES(?,?,?,?,?,?,?,?)',row)
             elif kind=='trade': con.execute('INSERT OR IGNORE INTO trades(symbol,trade_id,exchange_ms,recv_wall_ns,recv_mono_ns,price,qty,buyer_maker,is_rpi) VALUES(?,?,?,?,?,?,?,?,?)',row)
             elif kind=='poll': con.execute('INSERT INTO polls(symbol,start_wall_ns,end_wall_ns,start_mono_ns,end_mono_ns,http_status,rows_seen,new_rows,rpi_rows,used_weight_1m,error) VALUES(?,?,?,?,?,?,?,?,?,?,?)',row)
@@ -182,21 +186,20 @@ async def writer_loop(q):
 
 async def main():
     q=asyncio.Queue(maxsize=1_000_000)
+    loop=asyncio.get_running_loop()
+    for sig in (signal.SIGINT,signal.SIGTERM):
+        try: loop.add_signal_handler(sig,stop_event.set)
+        except (NotImplementedError,RuntimeError): pass
     writer=asyncio.create_task(writer_loop(q))
     tasks=[asyncio.create_task(book_loop(q)),asyncio.create_task(trade_loop(q)),asyncio.create_task(clock_loop(q))]
-    if DURATION_SECONDS>0:
-        asyncio.get_running_loop().call_later(DURATION_SECONDS,stop_event.set)
+    if DURATION_SECONDS>0: loop.call_later(DURATION_SECONDS,stop_event.set)
     await stop_event.wait()
     for t in tasks: t.cancel()
     await asyncio.gather(*tasks,return_exceptions=True)
-    await q.join(); await writer
+    # FIFO sentinel guarantees every already-enqueued market event is committed before writer exits.
+    await q.put(('stop',None)); await q.join(); await writer
 
-
-def request_stop(*_): stop_event.set()
 
 if __name__=='__main__':
-    for sig in (signal.SIGINT,signal.SIGTERM):
-        try: signal.signal(sig,lambda *_: request_stop())
-        except Exception: pass
     try: asyncio.run(main())
     except KeyboardInterrupt: pass
