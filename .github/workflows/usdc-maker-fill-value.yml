@@ -1,4 +1,5 @@
 name: USDC Zero-Fee Maker Probe
+# trigger prospective USDC maker capture
 
 on:
   push:
