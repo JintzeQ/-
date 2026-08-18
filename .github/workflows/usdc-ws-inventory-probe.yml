@@ -1,4 +1,5 @@
 name: Robust USDC Inventory Maker Probe
+# trigger prospective robust capture
 on:
   push:
     branches: [main]
