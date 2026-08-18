@@ -1,0 +1,13 @@
+symbol,lat_ms,mode,signals,fills,fill_rate,mean_gross_bp,mean_net_bp,total_net_bp,win_net,ci95_low_net,roundtrip_volume_usd
+WOOUSDT,10,protect,0,0,0.0,,,0.0,,,0.0
+WOOUSDT,10,neutral,0,0,0.0,,,0.0,,,0.0
+WOOUSDT,240,protect,0,0,0.0,,,0.0,,,0.0
+WOOUSDT,240,neutral,0,0,0.0,,,0.0,,,0.0
+CHZUSDT,10,protect,0,0,0.0,,,0.0,,,0.0
+CHZUSDT,10,neutral,0,0,0.0,,,0.0,,,0.0
+CHZUSDT,240,protect,0,0,0.0,,,0.0,,,0.0
+CHZUSDT,240,neutral,0,0,0.0,,,0.0,,,0.0
+GALAUSDT,10,protect,6,0,0.0,,,0.0,,,0.0
+GALAUSDT,10,neutral,0,0,0.0,,,0.0,,,0.0
+GALAUSDT,240,protect,2,0,0.0,,,0.0,,,0.0
+GALAUSDT,240,neutral,0,0,0.0,,,0.0,,,0.0
