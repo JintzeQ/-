@@ -1,0 +1,27 @@
+name: GALA Sweep Flip Context Screen
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_gala_context_screen.py'
+      - '.github/workflows/maker-gala-context.yml'
+permissions:
+  contents: write
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_gala_context_screen.py
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_gala_context_output/
+          git diff --cached --quiet || git commit -m 'Add GALA context screen results [skip ci]'
+          git push
