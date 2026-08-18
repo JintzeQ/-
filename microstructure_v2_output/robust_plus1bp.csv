@@ -1,0 +1,1 @@
+symbol,family,rid,latency,horizon_s,extra_stress_bps,train_mean_net_bps,train_n,n,mean_gross_bps,mean_net_bps,win_net,t_gross,ci95_low_net,median_gross_bps,p10_gross_bps,p90_gross_bps
