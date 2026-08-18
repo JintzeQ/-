@@ -1,0 +1,31 @@
+name: Inventory Aware Maker V10
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_inventory_mm_v10.py'
+      - '.github/workflows/maker-inventory-v10.yml'
+permissions:
+  contents: write
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_inventory_mm_v10.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-inventory-v10
+          path: maker_inventory_mm_v10_output/
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_inventory_mm_v10_output/
+          git diff --cached --quiet || git commit -m 'Add inventory-aware maker v10 results [skip ci]'
+          git push
