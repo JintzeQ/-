@@ -1,0 +1,31 @@
+name: Fresh WS Locked Inventory Maker OOS
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_inventory_fresh_ws_oos.py'
+      - '.github/workflows/maker-inventory-fresh-ws-oos.yml'
+permissions:
+  contents: write
+jobs:
+  oos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets pandas numpy tabulate
+      - run: python maker_inventory_fresh_ws_oos.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-inventory-fresh-ws-oos
+          path: maker_inventory_fresh_ws_oos_output/
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_inventory_fresh_ws_oos_output/
+          git diff --cached --quiet || git commit -m 'Add fresh WS locked inventory-maker OOS results [skip ci]'
+          git push
