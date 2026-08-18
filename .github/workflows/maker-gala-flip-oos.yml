@@ -1,0 +1,31 @@
+name: GALA Sweep Flip Maker OOS
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_gala_flip_oos.py'
+      - '.github/workflows/maker-gala-flip-oos.yml'
+permissions:
+  contents: write
+jobs:
+  oos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets numpy pandas tabulate
+      - run: python maker_gala_flip_oos.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-gala-flip-oos
+          path: maker_gala_flip_oos_output/
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_gala_flip_oos_output/
+          git diff --cached --quiet || git commit -m 'Add GALA sweep-flip OOS results [skip ci]'
+          git push
