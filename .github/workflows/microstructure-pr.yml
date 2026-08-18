@@ -1,0 +1,45 @@
+name: Binance Microstructure Alpha Backtest
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'microstructure_backtest.py'
+      - '.github/workflows/microstructure-pr.yml'
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run microstructure backtest
+        run: |
+          python microstructure_backtest.py \
+            --symbol BTCUSDT \
+            --start 2026-08-10 \
+            --end 2026-08-16 \
+            --train-end 2026-08-13 \
+            --bin-ms 500 \
+            --out microstructure_output | tee microstructure.log
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f microstructure_output/summary.md ]; then
+            cat microstructure_output/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: btcusdt-microstructure-results
+          path: |
+            microstructure_output/
+            microstructure.log
+          retention-days: 7
