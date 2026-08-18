@@ -1,0 +1,36 @@
+name: Maker Fill-Value Scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_fill_value_scan.py'
+      - '.github/workflows/maker-fill-value-scan.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets pandas numpy tabulate
+      - run: python maker_fill_value_scan.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: maker-fill-value-scan
+          path: maker_fill_value_scan_output/
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_fill_value_scan_output/
+          git diff --cached --quiet || git commit -m 'Add maker fill-value scan results [skip ci]'
+          git push
