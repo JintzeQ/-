@@ -1,0 +1,43 @@
+name: Microstructure V3 Cross-Asset Lead-Lag
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'microstructure_v3.py'
+      - '.github/workflows/microstructure-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run cross-asset lead-lag screen
+        run: python microstructure_v3.py | tee microstructure_v3.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: microstructure-v3-results
+          path: |
+            microstructure_v3_output/
+            microstructure_v3.log
+          retention-days: 7
+      - name: Commit compact results
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add microstructure_v3_output/summary.md microstructure_v3_output/ranked.csv
+          git commit -m "Add microstructure v3 lead-lag results [skip ci]" || exit 0
+          git push
