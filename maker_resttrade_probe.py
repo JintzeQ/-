@@ -5,7 +5,7 @@ import pandas as pd
 import requests, websockets
 
 SYMBOLS={'FETUSDT':0.0001,'OPUSDT':0.0001,'WIFUSDT':0.0001}
-CAPTURE_SECONDS=180
+CAPTURE_SECONDS=60
 POLL_SECONDS=1.0
 INFO_DELAY_MS=1100  # REST trades are never used as signal until this delay has elapsed
 ORDER_NOTIONAL=100.0
@@ -67,7 +67,6 @@ def at(b,ts):
     return None if i<0 else b.iloc[i]
 
 def visible_for_signal(t,sig):
-    # deliberately conservative: only exchange trades at least INFO_DELAY_MS old
     if len(t)==0:return t
     return t[t.ts<=sig-INFO_DELAY_MS]
 
