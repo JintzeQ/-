@@ -1,0 +1,32 @@
+name: Inside-Spread Maker V7
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_inside_spread_v7.py'
+      - '.github/workflows/maker-inside-spread-v7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_inside_spread_v7.py
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_inside_spread_v7_output/
+          git diff --cached --quiet || git commit -m 'Add inside-spread maker v7 results [skip ci]'
+          git push
