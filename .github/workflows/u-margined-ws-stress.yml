@@ -1,0 +1,31 @@
+name: BTCU ETHU AggTrade Queue Stress
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'u_margined_ws_stress.py'
+      - '.github/workflows/u-margined-ws-stress.yml'
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets pandas numpy tabulate
+      - run: python u_margined_ws_stress.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: u-margined-ws-stress
+          path: u_margined_ws_stress_output/
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add u_margined_ws_stress_output/
+          git diff --cached --quiet || git commit -m 'Add BTCU ETHU queue-stress results [skip ci]'
+          git push
