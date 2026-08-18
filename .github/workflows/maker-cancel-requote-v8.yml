@@ -1,0 +1,32 @@
+name: Cancel-Requote Maker V8
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'maker_cancel_requote_v8.py'
+      - '.github/workflows/maker-cancel-requote-v8.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python maker_cancel_requote_v8.py
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          git add maker_cancel_requote_v8_output/
+          git diff --cached --quiet || git commit -m 'Add cancel-requote maker v8 results [skip ci]'
+          git push
