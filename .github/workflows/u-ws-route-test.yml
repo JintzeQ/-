@@ -25,3 +25,4 @@ jobs:
           git add u_ws_route_output/
           git diff --cached --quiet || git commit -m 'Add BTCU websocket route results [skip ci]'
           git push
+# Trigger only.
