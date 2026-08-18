@@ -21,3 +21,4 @@ jobs:
         run: python -m py_compile u_shadow_recorder.py u_shadow_analyzer.py
       - name: Analyzer CLI smoke test
         run: python u_shadow_analyzer.py --help
+# Trigger-only change; no strategy logic changed.
