@@ -1,0 +1,35 @@
+name: USDC Zero-Fee Maker Probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'usdc_maker_fill_value_scan.py'
+      - '.github/workflows/usdc-maker-fill-value.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install websockets numpy pandas tabulate
+      - run: python usdc_maker_fill_value_scan.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: usdc-zero-fee-maker-probe
+          path: usdc_maker_output/
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add usdc_maker_output/
+          git diff --cached --quiet || git commit -m 'Add USDC zero-fee maker probe results [skip ci]'
+          git push
