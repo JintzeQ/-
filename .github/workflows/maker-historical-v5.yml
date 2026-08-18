@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'maker_historical_v5.py'
+      - 'maker_historical_v5b.py'
       - '.github/workflows/maker-historical-v5.yml'
   workflow_dispatch:
 
@@ -21,7 +22,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install pandas numpy requests tabulate
-      - run: python maker_historical_v5.py
+      - run: python maker_historical_v5b.py
       - uses: actions/upload-artifact@v4
         with:
           name: maker-historical-v5
@@ -30,6 +31,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
           git add maker_historical_v5_output/
           git diff --cached --quiet || git commit -m 'Add historical maker v5 results [skip ci]'
           git push
