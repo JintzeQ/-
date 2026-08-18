@@ -1,0 +1,38 @@
+[
+  {
+    "name": "standard_raw",
+    "url": "wss://fstream.binance.com/ws/btcu@aggTrade",
+    "connected": true,
+    "messages": 0,
+    "aggtrade": 0,
+    "errors": [],
+    "sample": null
+  },
+  {
+    "name": "standard_combined",
+    "url": "wss://fstream.binance.com/stream?streams=btcu@aggTrade",
+    "connected": true,
+    "messages": 0,
+    "aggtrade": 0,
+    "errors": [],
+    "sample": null
+  },
+  {
+    "name": "market_raw",
+    "url": "wss://fstream.binance.com/market/ws/btcu@aggTrade",
+    "connected": true,
+    "messages": 0,
+    "aggtrade": 0,
+    "errors": [],
+    "sample": null
+  },
+  {
+    "name": "public_raw",
+    "url": "wss://fstream.binance.com/public/ws/btcu@aggTrade",
+    "connected": true,
+    "messages": 0,
+    "aggtrade": 0,
+    "errors": [],
+    "sample": null
+  }
+]
