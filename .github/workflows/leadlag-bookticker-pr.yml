@@ -16,17 +16,26 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install pandas numpy requests
-      - name: Run tick-level lead-lag backtest
+      - name: Run available lead-lag backtest
         shell: bash
         run: |
           set -o pipefail
-          python leadlag_bookticker_backtest_v2.py | tee leadlag_backtest.log
+          if [ -f passive_leadlag_backtest.py ]; then
+            python passive_leadlag_backtest.py | tee passive_leadlag.log
+          elif [ -f leadlag_bookticker_backtest_v2.py ]; then
+            python leadlag_bookticker_backtest_v2.py | tee leadlag_backtest.log
+          else
+            echo "No recognized lead-lag backtest script in PR."
+          fi
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: leadlag-bookticker-results-v2
+          name: leadlag-pr-results
           path: |
+            passive_leadlag_output/
+            passive_leadlag.log
             leadlag_output_v2/
             leadlag_backtest.log
+          if-no-files-found: warn
           retention-days: 7
