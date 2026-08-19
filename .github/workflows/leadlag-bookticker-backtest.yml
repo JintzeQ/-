@@ -3,6 +3,8 @@ name: LeadLag BookTicker Backtest
 on:
   push:
     branches: ['chatgpt/leadlag-backtest']
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
