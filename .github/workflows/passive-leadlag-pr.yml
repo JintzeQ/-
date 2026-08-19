@@ -7,23 +7,35 @@ on:
 
 jobs:
   backtest:
-    if: ${{ hashFiles('passive_leadlag_backtest.py') != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Check passive backtest script
+        id: probe
+        shell: bash
+        run: |
+          if [ -f passive_leadlag_backtest.py ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "No passive_leadlag_backtest.py in this PR; skipping."
+          fi
       - uses: actions/setup-python@v5
+        if: steps.probe.outputs.run == 'true'
         with:
           python-version: '3.12'
       - name: Install dependencies
+        if: steps.probe.outputs.run == 'true'
         run: pip install pandas numpy requests
       - name: Run passive lead-lag backtest
+        if: steps.probe.outputs.run == 'true'
         shell: bash
         run: |
           set -o pipefail
           python passive_leadlag_backtest.py | tee passive_leadlag.log
       - name: Upload results
-        if: always()
+        if: always() && steps.probe.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: passive-leadlag-results
