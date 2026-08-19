@@ -8,7 +8,7 @@ on:
 jobs:
   backtest:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,7 +20,13 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f crowding_unwind_runner.py ]; then
+          if [ -f persistent_multivenue_broad_runner.py ]; then
+            python persistent_multivenue_broad_runner.py | tee persistent_multivenue_broad.log
+          elif [ -f persistent_multivenue_repricing_fast_runner.py ]; then
+            python persistent_multivenue_repricing_fast_runner.py | tee persistent_multivenue.log
+          elif [ -f persistent_multivenue_repricing.py ]; then
+            python persistent_multivenue_repricing.py | tee persistent_multivenue.log
+          elif [ -f crowding_unwind_runner.py ]; then
             python crowding_unwind_runner.py | tee crowding_unwind.log
           elif [ -f crowding_unwind_screen.py ]; then
             python crowding_unwind_screen.py | tee crowding_unwind.log
@@ -43,6 +49,10 @@ jobs:
         with:
           name: pr-backtest-results
           path: |
+            persistent_multivenue_broad_output/
+            persistent_multivenue_broad.log
+            persistent_multivenue_output/
+            persistent_multivenue.log
             crowding_unwind_output/
             crowding_unwind.log
             trapped_flow_reversal_tick_output/
