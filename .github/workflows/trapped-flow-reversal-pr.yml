@@ -1,0 +1,33 @@
+name: Trapped Flow Reversal Untouched OOS
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  oos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: trapped_flow_reversal_cache
+          key: ${{ runner.os }}-trapped-flow-oos-20260701-20260818-v1
+      - run: pip install pandas numpy requests tabulate
+      - name: Run Strategy 4A untouched holdout
+        shell: bash
+        run: |
+          set -o pipefail
+          python trapped_flow_reversal_oos.py | tee trapped_flow_reversal.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trapped-flow-reversal-results
+          path: |
+            trapped_flow_reversal_output/
+            trapped_flow_reversal.log
+          retention-days: 7
