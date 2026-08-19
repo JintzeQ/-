@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f trapped_flow_reversal_oos.py ]; then
+          if [ -f trapped_flow_reversal_tick_exec.py ]; then
+            python trapped_flow_reversal_tick_exec.py | tee trapped_flow_reversal_tick_exec.log
+          elif [ -f trapped_flow_reversal_oos.py ]; then
             python trapped_flow_reversal_oos.py | tee trapped_flow_reversal.log
           elif [ -f passive_leadlag_backtest.py ]; then
             python passive_leadlag_backtest.py | tee passive_leadlag.log
@@ -35,6 +37,8 @@ jobs:
         with:
           name: pr-backtest-results
           path: |
+            trapped_flow_reversal_tick_output/
+            trapped_flow_reversal_tick_exec.log
             trapped_flow_reversal_output/
             trapped_flow_reversal.log
             passive_leadlag_output/
