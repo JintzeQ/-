@@ -34,6 +34,22 @@ jobs:
       - name: Install dependencies
         if: steps.check.outputs.run == 'true'
         run: pip install pandas numpy requests
+      - name: Normalize timestamp resolution
+        if: steps.check.outputs.run == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('shock_reversal_screen.py')
+          s=p.read_text()
+          old='ts_ns = x.timestamp.astype("int64").to_numpy(dtype=np.int64)'
+          new='ts_ns = x.timestamp.to_numpy(dtype="datetime64[ns]").astype(np.int64)'
+          if old in s:
+              p.write_text(s.replace(old,new))
+              print('patched timestamp int resolution to ns')
+          else:
+              print('timestamp normalization already present')
+          PY
       - name: Run broad historical shock/reversal screen
         if: steps.check.outputs.run == 'true'
         shell: bash
