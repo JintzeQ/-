@@ -1,0 +1,33 @@
+name: Passive LeadLag PR Backtest
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    if: ${{ hashFiles('passive_leadlag_backtest.py') != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run passive lead-lag backtest
+        shell: bash
+        run: |
+          set -o pipefail
+          python passive_leadlag_backtest.py | tee passive_leadlag.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: passive-leadlag-results
+          path: |
+            passive_leadlag_output/
+            passive_leadlag.log
+          retention-days: 7
