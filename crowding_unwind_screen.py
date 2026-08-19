@@ -55,7 +55,6 @@ def read_kzip(s,m):
         with zipfile.ZipFile(p) as z:
             name=next(n for n in z.namelist() if n.endswith('.csv'))
             x=pd.read_csv(z.open(name),header=None)
-        # Binance archives may include a header row.
         x=x.iloc[:,:12]; x.columns=['ts','o','h','l','c','v','ct','qv','n','tbv','tbq','ignore']
         for c in ['ts','c','qv']:x[c]=pd.to_numeric(x[c],errors='coerce')
         x=x.dropna(subset=['ts','c','qv'])
@@ -80,7 +79,6 @@ def load_kline(s):
     return d
 
 def candidate_rows(k):
-    # Return-blind prefilter: uses only frozen price/volume conditions, not OI or future returns.
     return k[(k.r1h.abs()>=PRICE_THR)&(k.volx>=VOLX_THR)].copy()
 
 def needed_metric_days(s,k):
@@ -114,7 +112,9 @@ def read_metric_day(s,d):
         need=['create_time','sum_open_interest_value']
         if not all(c in x.columns for c in need):raise ValueError(f'columns={list(x.columns)}')
         x['dt']=pd.to_datetime(x.create_time,utc=True,errors='coerce')
-        x['ts']=(x.dt.astype('int64')//10**6).astype('Int64')
+        # Explicit millisecond conversion: pandas 3 may store parsed datetimes at microsecond resolution.
+        naive=x['dt'].dt.tz_convert(None)
+        x['ts']=naive.astype('datetime64[ms]').astype('int64')
         x['oi']=pd.to_numeric(x.sum_open_interest_value,errors='coerce')
         return x[['ts','oi']].dropna().astype({'ts':'int64'}).drop_duplicates('ts').sort_values('ts')
     except Exception as e:
@@ -130,17 +130,18 @@ def load_metrics_for_symbol(s,days):
 
 def nearest_oi(m,targets):
     if m is None or not len(m):return np.full(len(targets),np.nan)
-    a=pd.DataFrame({'target':np.asarray(targets,dtype='int64')}).sort_values('target')
+    a=pd.DataFrame({'target':np.asarray(targets,dtype='int64')})
+    a['_ord']=np.arange(len(a)); a=a.sort_values('target')
     b=m.rename(columns={'ts':'mts'}).sort_values('mts')
     z=pd.merge_asof(a,b,left_on='target',right_on='mts',direction='nearest',tolerance=60000)
-    return z.sort_index().oi.to_numpy()
+    return z.sort_values('_ord').oi.to_numpy()
 
 def build_symbol_events(s,k,metric_days):
     c=candidate_rows(k).copy().sort_values('ts').reset_index()
     if c.empty:return pd.DataFrame(),{'symbol':s,'pricevol_candidates':0,'oi_matched':0,'raw_signals':0,'events':0}
     m=load_metrics_for_symbol(s,metric_days)
-    now=nearest_oi(m,c.ts.to_numpy(dtype='int64'))
-    prev=nearest_oi(m,c.ts.to_numpy(dtype='int64')-60*60*1000)
+    targets=c.ts.to_numpy(dtype='int64')
+    now=nearest_oi(m,targets); prev=nearest_oi(m,targets-60*60*1000)
     c['oi_now']=now; c['oi_prev']=prev; c['oi1h']=c.oi_now/(c.oi_prev+1e-12)-1
     matched=np.isfinite(c.oi1h)
     aligned=np.sign(c.r1h)==np.sign(c.oi1h)
@@ -164,7 +165,6 @@ def robust(x):
     x=np.sort(np.asarray(x,float)); cut=max(1,int(np.ceil(len(x)*.05)))
     return float(np.mean(x[:-cut])) if len(x)>cut else np.nan
 
-# Stage A: official Binance Vision monthly 5m klines.
 prefetch_klines()
 K={}; req=set()
 for n,s in enumerate(ALTS,1):
@@ -172,8 +172,6 @@ for n,s in enumerate(ALTS,1):
     if k is not None and len(k):req |= needed_metric_days(s,k)
     print('prepared',n,'/',len(ALTS),s,'bars',0 if k is None else len(k),'metric-days-so-far',len(req),flush=True)
 if not req:raise RuntimeError('no price/volume candidates from kline archives')
-
-# Stage B: official Binance Vision daily metrics only for return-blind candidate days.
 missing=prefetch_metrics(req)
 parts=[]; diags=[]
 for n,s in enumerate(ALTS,1):
@@ -185,7 +183,6 @@ for n,s in enumerate(ALTS,1):
     if len(x):parts.append(x)
 pd.DataFrame(diags).to_csv(f'{OUT}/coverage_diagnostics.csv',index=False)
 if not parts:raise RuntimeError('no Strategy #5 events after valid archive ingestion')
-
 e=pd.concat(parts,ignore_index=True).sort_values('ts').reset_index(drop=True); e.to_csv(f'{OUT}/events.csv',index=False)
 rows=[]
 for h,_ in HORIZONS:
