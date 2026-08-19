@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f persistent_multivenue_broad_runner.py ]; then
+          if [ -f persistent_multivenue_throughput_runner.py ]; then
+            python persistent_multivenue_throughput_runner.py | tee persistent_multivenue_throughput.log
+          elif [ -f persistent_multivenue_broad_runner.py ]; then
             python persistent_multivenue_broad_runner.py | tee persistent_multivenue_broad.log
           elif [ -f persistent_multivenue_repricing_fast_runner.py ]; then
             python persistent_multivenue_repricing_fast_runner.py | tee persistent_multivenue.log
@@ -49,6 +51,8 @@ jobs:
         with:
           name: pr-backtest-results
           path: |
+            persistent_multivenue_throughput_output/
+            persistent_multivenue_throughput.log
             persistent_multivenue_broad_output/
             persistent_multivenue_broad.log
             persistent_multivenue_output/
