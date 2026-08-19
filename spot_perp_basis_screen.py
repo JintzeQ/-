@@ -38,11 +38,12 @@ def read_kline(blob, market):
             name=z.namelist()[0]
             d=pd.read_csv(z.open(name),header=None)
         if d.shape[1]<8:return None
-        ts=pd.to_numeric(d.iloc[:,0],errors='coerce')
+        ts=pd.Series(pd.to_numeric(d.iloc[:,0],errors='coerce'),index=d.index,dtype='float64')
         # Binance Spot archive timestamps are microseconds from 2025 onward; normalize to ms.
-        if market=='spot': ts=np.where(ts>1e14, ts/1000.0, ts)
-        out=pd.DataFrame({'ts':ts.astype('Int64'),'close':pd.to_numeric(d.iloc[:,4],errors='coerce'),'qv':pd.to_numeric(d.iloc[:,7],errors='coerce')})
-        return out.dropna().drop_duplicates('ts').sort_values('ts')
+        if market=='spot': ts=ts.where(ts<=1e14,ts/1000.0)
+        out=pd.DataFrame({'ts':ts,'close':pd.to_numeric(d.iloc[:,4],errors='coerce'),'qv':pd.to_numeric(d.iloc[:,7],errors='coerce')}).dropna()
+        out['ts']=out['ts'].round().astype('int64')
+        return out.drop_duplicates('ts').sort_values('ts')
     except Exception:return None
 
 def urls(sym,ym):
