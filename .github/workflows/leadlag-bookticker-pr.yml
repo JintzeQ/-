@@ -17,13 +17,16 @@ jobs:
       - name: Install dependencies
         run: pip install pandas numpy requests
       - name: Run tick-level lead-lag backtest
-        run: python leadlag_bookticker_backtest.py | tee leadlag_backtest.log
+        shell: bash
+        run: |
+          set -o pipefail
+          python leadlag_bookticker_backtest_v2.py | tee leadlag_backtest.log
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: leadlag-bookticker-results
+          name: leadlag-bookticker-results-v2
           path: |
-            leadlag_output/
+            leadlag_output_v2/
             leadlag_backtest.log
           retention-days: 7
