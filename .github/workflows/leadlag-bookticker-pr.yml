@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f trapped_flow_reversal_tick_exec.py ]; then
+          if [ -f trapped_flow_reversal_tick_exec_runner.py ]; then
+            python trapped_flow_reversal_tick_exec_runner.py | tee trapped_flow_reversal_tick_exec.log
+          elif [ -f trapped_flow_reversal_tick_exec.py ]; then
             python trapped_flow_reversal_tick_exec.py | tee trapped_flow_reversal_tick_exec.log
           elif [ -f trapped_flow_reversal_oos.py ]; then
             python trapped_flow_reversal_oos.py | tee trapped_flow_reversal.log
