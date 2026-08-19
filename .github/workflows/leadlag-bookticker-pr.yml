@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f crowding_unwind_runner.py ]; then
+          if [ -f spot_perp_basis_screen.py ]; then
+            python spot_perp_basis_screen.py | tee spot_perp_basis.log
+          elif [ -f crowding_unwind_runner.py ]; then
             python crowding_unwind_runner.py | tee crowding_unwind.log
           elif [ -f crowding_unwind_screen.py ]; then
             python crowding_unwind_screen.py | tee crowding_unwind.log
@@ -43,6 +45,8 @@ jobs:
         with:
           name: pr-backtest-results
           path: |
+            spot_perp_basis_output/
+            spot_perp_basis.log
             crowding_unwind_output/
             crowding_unwind.log
             trapped_flow_reversal_tick_output/
