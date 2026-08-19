@@ -1,0 +1,1 @@
+Strategy #4A untouched holdout is fixed to 2026-07-01 through 2026-08-18 UTC. This marker only triggers the existing PR workflow; it does not alter the frozen trading rule.
