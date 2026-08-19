@@ -1,0 +1,45 @@
+name: Shock Reversal Historical Screen
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check screen script
+        id: check
+        shell: bash
+        run: |
+          if [ -f shock_reversal_screen.py ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "No shock_reversal_screen.py in this PR; skipping."
+          fi
+      - uses: actions/setup-python@v5
+        if: steps.check.outputs.run == 'true'
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        if: steps.check.outputs.run == 'true'
+        run: pip install pandas numpy requests
+      - name: Run broad historical shock/reversal screen
+        if: steps.check.outputs.run == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          python shock_reversal_screen.py | tee shock_reversal.log
+      - name: Upload results
+        if: always() && steps.check.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: shock-reversal-screen-results
+          path: |
+            shock_reversal_output/
+            shock_reversal.log
+          retention-days: 7
