@@ -179,14 +179,14 @@ for block,start in BLOCKS.items():
                        prior_bylead-prior_reverse>=MIN_LEAD_ADVANTAGE and st['train_n']>100000)
             beta=fit_beta(st['xtx'],st['xty']) if st['train_n'] else np.zeros(P)
             if eval_day:
-                pred=X@beta; idx=np.where(np.isfinite(pred)&np.isfinite(y500)&np.isfinite(b500)&np.isfinite(gap))[0]
-                last_sig=-10**18; candidates=[]
+                pred=X@beta; last_sig=-10**18; candidates=[]
                 if leader_ok:
-                    for j in idx:
-                        side=1 if pred[j]>0 else -1
-                        if abs(pred[j])<PRED_HURDLE_BP or abs(y500[j])<MIN_BYBIT_MOVE_BP or abs(gap[j])<MIN_GAP_BP:continue
-                        if np.sign(y500[j])!=side or np.sign(gap[j])!=side:continue
-                        signal_ms=start_ms+j*GRID_MS+GRID_MS
+                    pside=np.where(pred>0,1,-1)
+                    mask=(np.isfinite(pred)&np.isfinite(y500)&np.isfinite(b500)&np.isfinite(gap)&
+                          (np.abs(pred)>=PRED_HURDLE_BP)&(np.abs(y500)>=MIN_BYBIT_MOVE_BP)&
+                          (np.abs(gap)>=MIN_GAP_BP)&(np.sign(y500)==pside)&(np.sign(gap)==pside))
+                    for j in np.flatnonzero(mask):
+                        side=int(pside[j]); signal_ms=start_ms+int(j)*GRID_MS+GRID_MS
                         if signal_ms-last_sig<DEOVERLAP_MS:continue
                         candidates.append((signal_ms,side,float(pred[j]),float(y500[j]),float(b500[j]),float(gap[j]))); last_sig=signal_ms
                 for lat in LATENCIES:
