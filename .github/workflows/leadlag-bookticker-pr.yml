@@ -15,24 +15,28 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install pandas numpy requests
-      - name: Run available lead-lag backtest
+        run: pip install pandas numpy requests tabulate
+      - name: Run available research backtest
         shell: bash
         run: |
           set -o pipefail
-          if [ -f passive_leadlag_backtest.py ]; then
+          if [ -f trapped_flow_reversal_oos.py ]; then
+            python trapped_flow_reversal_oos.py | tee trapped_flow_reversal.log
+          elif [ -f passive_leadlag_backtest.py ]; then
             python passive_leadlag_backtest.py | tee passive_leadlag.log
           elif [ -f leadlag_bookticker_backtest_v2.py ]; then
             python leadlag_bookticker_backtest_v2.py | tee leadlag_backtest.log
           else
-            echo "No recognized lead-lag backtest script in PR."
+            echo "No recognized research backtest script in PR."
           fi
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: leadlag-pr-results
+          name: pr-backtest-results
           path: |
+            trapped_flow_reversal_output/
+            trapped_flow_reversal.log
             passive_leadlag_output/
             passive_leadlag.log
             leadlag_output_v2/
