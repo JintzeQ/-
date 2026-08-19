@@ -25,6 +25,12 @@ jobs:
         if: steps.check.outputs.run == 'true'
         with:
           python-version: '3.12'
+      - name: Restore Binance 1m cache
+        if: steps.check.outputs.run == 'true'
+        uses: actions/cache@v4
+        with:
+          path: shock_reversal_cache
+          key: ${{ runner.os }}-shock-reversal-1m-v1
       - name: Install dependencies
         if: steps.check.outputs.run == 'true'
         run: pip install pandas numpy requests
