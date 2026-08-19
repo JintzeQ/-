@@ -1,0 +1,33 @@
+name: Shock Continuation Historical Screen
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: shock_continuation_cache
+          key: ${{ runner.os }}-shock-continuation-1m-v1
+      - run: pip install pandas numpy requests tabulate
+      - name: Run Strategy 3 continuation screen
+        shell: bash
+        run: |
+          set -o pipefail
+          python shock_continuation_screen.py | tee shock_continuation.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shock-continuation-results
+          path: |
+            shock_continuation_output/
+            shock_continuation.log
+          retention-days: 7
