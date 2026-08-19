@@ -42,6 +42,7 @@ SPLITS = {
     "validation": (pd.Timestamp("2025-07-01", tz="UTC"), pd.Timestamp("2026-01-01", tz="UTC")),
     "oos": (pd.Timestamp("2026-01-01", tz="UTC"), pd.Timestamp("2026-08-01", tz="UTC")),
 }
+SPLIT_NS = {k: (int(a.value), int(b.value)) for k, (a, b) in SPLITS.items()}
 
 
 def download(symbol: str, month: str) -> Path | None:
@@ -77,12 +78,12 @@ def read_zip(p: Path) -> pd.DataFrame:
     df = pd.read_csv(io.BytesIO(raw), header=None, names=COLS, low_memory=False)
     ot = pd.to_numeric(df.open_time, errors="coerce")
     df = df[ot.notna()].copy()
-    for c in ["open_time","open","high","low","close","quote_volume","taker_quote"]:
+    for c in ["open_time","close","quote_volume","taker_quote"]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     med = float(df.open_time.median())
     unit = "us" if med > 1e14 else "ms"
     df["timestamp"] = pd.to_datetime(df.open_time, unit=unit, utc=True)
-    return df[["timestamp","open","high","low","close","quote_volume","taker_quote"]].dropna()
+    return df[["timestamp","close","quote_volume","taker_quote"]].dropna()
 
 
 def load_symbol(symbol: str) -> pd.DataFrame:
@@ -97,8 +98,7 @@ def load_symbol(symbol: str) -> pd.DataFrame:
             print(f"[{symbol}] months {i}/{len(MONTHS)}", flush=True)
     if not frames:
         return pd.DataFrame()
-    d = pd.concat(frames, ignore_index=True).sort_values("timestamp").drop_duplicates("timestamp", keep="last")
-    d = d.reset_index(drop=True)
+    d = pd.concat(frames, ignore_index=True).sort_values("timestamp").drop_duplicates("timestamp", keep="last").reset_index(drop=True)
     print(f"[{symbol}] rows={len(d):,} {d.timestamp.iloc[0]} -> {d.timestamp.iloc[-1]}", flush=True)
     return d
 
@@ -114,21 +114,17 @@ def build_benchmark() -> pd.DataFrame:
     return b[["timestamp","mret"]]
 
 
-def features(d: pd.DataFrame, bench: pd.DataFrame) -> pd.DataFrame:
+def make_features(d: pd.DataFrame, bench: pd.DataFrame) -> pd.DataFrame:
     x = d.merge(bench, on="timestamp", how="inner").sort_values("timestamp").reset_index(drop=True)
     x["aret"] = np.log(x.close).diff()
-    m = x.mret
-    a = x.aret
-    # Shifted rolling beta: only information available strictly before the event minute.
-    cov = a.rolling(BETA_WINDOW, min_periods=360).cov(m).shift(1)
-    var = m.rolling(BETA_WINDOW, min_periods=360).var().shift(1)
+    cov = x.aret.rolling(BETA_WINDOW, min_periods=360).cov(x.mret).shift(1)
+    var = x.mret.rolling(BETA_WINDOW, min_periods=360).var().shift(1)
     x["beta"] = (cov / var.replace(0, np.nan)).clip(-3, 5)
     x["resid1"] = x.aret - x.beta * x.mret
     x["resid3"] = x.resid1.rolling(3, min_periods=3).sum()
 
     q = x.quote_volume.clip(lower=0)
-    tq = x.taker_quote.clip(lower=0)
-    signed = 2.0 * tq - q
+    signed = 2.0 * x.taker_quote.clip(lower=0) - q
     prev_q = q.shift(1).rolling(2, min_periods=2).sum()
     prev_s = signed.shift(1).rolling(2, min_periods=2).sum()
     x["flow_prev"] = prev_s / prev_q.replace(0, np.nan)
@@ -139,28 +135,27 @@ def features(d: pd.DataFrame, bench: pd.DataFrame) -> pd.DataFrame:
     x["vshock"] = q3 / qmed.replace(0, np.nan)
     x["shock_dir"] = np.sign(x.resid3)
     x["side"] = -x.shock_dir
-    x["nonextend"] = x.shock_dir * x.resid1 <= 0.0005  # <=5bp continuation in final minute
-
+    x["nonextend"] = x.shock_dir * x.resid1 <= 0.0005
     for h in HORIZONS:
         x[f"fwd_{h}"] = x.side * (x.close.shift(-h) / x.close - 1.0) * 1e4
     return x
 
 
-def cooldown_indices(mask: np.ndarray, cooldown: int = COOLDOWN_MIN) -> np.ndarray:
+def cooldown_indices(mask: np.ndarray) -> np.ndarray:
     idx = np.flatnonzero(mask)
     if len(idx) == 0:
         return idx
-    keep = []
+    out = []
     next_ok = -1
     for i in idx:
         ii = int(i)
         if ii >= next_ok:
-            keep.append(ii)
-            next_ok = ii + cooldown + 1
-    return np.asarray(keep, dtype=np.int64)
+            out.append(ii)
+            next_ok = ii + COOLDOWN_MIN + 1
+    return np.asarray(out, dtype=np.int64)
 
 
-def stats(vals: np.ndarray) -> dict:
+def calc_stats(vals) -> dict:
     a = np.asarray(vals, dtype=float)
     a = a[np.isfinite(a)]
     if len(a) == 0:
@@ -176,43 +171,34 @@ def stats(vals: np.ndarray) -> dict:
     }
 
 
-def split_name(ts: pd.Timestamp) -> str | None:
-    for name, (a, b) in SPLITS.items():
-        if a <= ts < b:
-            return name
-    return None
-
-
 def main():
     print(f"Strategy #2A symbols={len(SYMBOLS)} months={MONTHS[0]}..{MONTHS[-1]} round_trip_taker={TAKER_RT_BPS}bps", flush=True)
     bench = build_benchmark()
     configs = list(itertools.product(SHOCK_BPS, VSHOCK, FLOW_ABS, EXHAUST_RATIO))
-    acc = {}
-    symbol_events = []
+    global_acc: dict[tuple, list] = {}
+    symbol_rows = []
 
     for si, sym in enumerate(SYMBOLS, 1):
         print(f"\n=== {sym} {si}/{len(SYMBOLS)} ===", flush=True)
         raw = load_symbol(sym)
         if len(raw) < 10000:
             continue
-        x = features(raw, bench)
-        ts = x.timestamp.to_numpy()
+        x = make_features(raw, bench)
+        ts_ns = x.timestamp.astype("int64").to_numpy(dtype=np.int64)
         resid = x.resid3.to_numpy(dtype=float)
         vshock = x.vshock.to_numpy(dtype=float)
         fp = x.flow_prev.to_numpy(dtype=float)
         fn = x.flow_now.to_numpy(dtype=float)
         sd = x.shock_dir.to_numpy(dtype=float)
         nonextend = x.nonextend.to_numpy(dtype=bool)
-
         finite = np.isfinite(resid) & np.isfinite(vshock) & np.isfinite(fp) & np.isfinite(fn) & (sd != 0) & (np.abs(resid) <= 0.05)
 
         for shock_bp, vs, flow_abs, er in configs:
             mask = finite.copy()
             mask &= np.abs(resid) * 1e4 >= shock_bp
             mask &= vshock >= vs
-            mask &= (sd * fp >= flow_abs)  # prior aggressor flow confirms shock direction
-            # Current flow must have decayed materially or flipped.
-            mask &= (sd * fn <= er * np.abs(fp))
+            mask &= sd * fp >= flow_abs
+            mask &= sd * fn <= er * np.abs(fp)
             mask &= nonextend
             idx = cooldown_indices(mask)
             if len(idx) == 0:
@@ -225,117 +211,86 @@ def main():
                     continue
                 ii = idx[valid]
                 vv = vals[valid]
-                for split, (a, b) in SPLITS.items():
-                    sel = (x.timestamp.iloc[ii].to_numpy() >= a.to_datetime64()) & (x.timestamp.iloc[ii].to_numpy() < b.to_datetime64())
+                t = ts_ns[ii]
+                for split, (a_ns, b_ns) in SPLIT_NS.items():
+                    sel = (t >= a_ns) & (t < b_ns)
                     if not sel.any():
                         continue
+                    sv = vv[sel]
                     key = (shock_bp, vs, flow_abs, er, h, split)
-                    acc.setdefault(key, []).extend(vv[sel].tolist())
-
-                # Keep symbol-level event returns for later chosen-config diagnostics.
-                for j, val in zip(ii, vv):
-                    sp = split_name(x.timestamp.iloc[int(j)])
-                    if sp:
-                        symbol_events.append((sym, shock_bp, vs, flow_abs, er, h, sp, float(val)))
+                    global_acc.setdefault(key, []).extend(sv.tolist())
+                    sr = {"symbol":sym,"shock_bps":shock_bp,"vshock":vs,"flow_abs":flow_abs,"exhaust_ratio":er,"horizon_min":h,"split":split}
+                    sr.update(calc_stats(sv))
+                    symbol_rows.append(sr)
 
         del raw, x
 
     rows = []
-    for (shock_bp, vs, flow_abs, er, h, split), vals in acc.items():
+    for (shock_bp, vs, flow_abs, er, h, split), vals in global_acc.items():
         row = {"shock_bps":shock_bp,"vshock":vs,"flow_abs":flow_abs,"exhaust_ratio":er,"horizon_min":h,"split":split}
-        row.update(stats(np.asarray(vals)))
-        days = (SPLITS[split][1] - SPLITS[split][0]).days
-        row["events_per_day"] = row["n"] / max(days, 1)
+        row.update(calc_stats(vals))
+        row["events_per_day"] = row["n"] / max((SPLITS[split][1] - SPLITS[split][0]).days, 1)
         rows.append(row)
     res = pd.DataFrame(rows)
+    sres = pd.DataFrame(symbol_rows)
     res.to_csv(OUT / "all_results.csv", index=False)
-
+    sres.to_csv(OUT / "all_symbol_results.csv", index=False)
     if len(res) == 0:
         raise RuntimeError("No events generated")
 
     wide = res.pivot_table(index=["shock_bps","vshock","flow_abs","exhaust_ratio","horizon_min"], columns="split", values=["n","mean_bps","median_bps","win","net10_mean_bps","events_per_day"]).reset_index()
     wide.columns = ["_".join([str(z) for z in c if str(z)]) if isinstance(c, tuple) else str(c) for c in wide.columns]
-
-    required = ["n_train","n_validation","mean_bps_train","mean_bps_validation"]
-    for c in required:
+    for c in ["n_train","n_validation","mean_bps_train","mean_bps_validation"]:
         if c not in wide:
             wide[c] = np.nan
+
     eligible = wide[(wide.n_train >= 200) & (wide.n_validation >= 100) & (wide.mean_bps_train > 0) & (wide.mean_bps_validation > 0)].copy()
     if len(eligible):
         eligible["robust_score"] = np.minimum(eligible.mean_bps_train, eligible.mean_bps_validation)
         if "median_bps_train" in eligible and "median_bps_validation" in eligible:
             eligible["robust_score"] += 0.25 * np.minimum(eligible.median_bps_train, eligible.median_bps_validation)
         eligible = eligible.sort_values(["robust_score","n_validation"], ascending=[False,False])
-        chosen = eligible.iloc[0]
     else:
-        temp = wide[(wide.n_train >= 100) & (wide.n_validation >= 50)].copy()
-        if len(temp) == 0:
-            temp = wide.copy()
-        temp["robust_score"] = np.minimum(temp.get("mean_bps_train", -1e9), temp.get("mean_bps_validation", -1e9))
-        temp = temp.sort_values(["robust_score"], ascending=False)
-        chosen = temp.iloc[0]
-        eligible = temp
-
+        eligible = wide[(wide.n_train >= 100) & (wide.n_validation >= 50)].copy()
+        if len(eligible) == 0:
+            eligible = wide.copy()
+        eligible["robust_score"] = np.minimum(eligible.mean_bps_train.fillna(-1e9), eligible.mean_bps_validation.fillna(-1e9))
+        eligible = eligible.sort_values("robust_score", ascending=False)
+    chosen = eligible.iloc[0]
     eligible.head(50).to_csv(OUT / "ranked_train_validation.csv", index=False)
-    chosen.to_frame().T.to_csv(OUT / "chosen_config.csv", index=False)
 
-    cfg = {
-        "shock_bps": int(chosen.shock_bps),
-        "vshock": float(chosen.vshock),
-        "flow_abs": float(chosen.flow_abs),
-        "exhaust_ratio": float(chosen.exhaust_ratio),
-        "horizon_min": int(chosen.horizon_min),
-    }
+    cfg = {"shock_bps":int(chosen.shock_bps),"vshock":float(chosen.vshock),"flow_abs":float(chosen.flow_abs),"exhaust_ratio":float(chosen.exhaust_ratio),"horizon_min":int(chosen.horizon_min)}
     chosen_rows = res[
-        (res.shock_bps == cfg["shock_bps"]) &
-        (res.vshock == cfg["vshock"]) &
-        (res.flow_abs == cfg["flow_abs"]) &
-        (res.exhaust_ratio == cfg["exhaust_ratio"]) &
+        (res.shock_bps == cfg["shock_bps"]) & (res.vshock == cfg["vshock"]) &
+        (res.flow_abs == cfg["flow_abs"]) & (res.exhaust_ratio == cfg["exhaust_ratio"]) &
         (res.horizon_min == cfg["horizon_min"])
     ].copy()
     chosen_rows.to_csv(OUT / "chosen_by_split.csv", index=False)
 
-    ev = pd.DataFrame(symbol_events, columns=["symbol","shock_bps","vshock","flow_abs","exhaust_ratio","horizon_min","split","gross_bps"])
-    cev = ev[
-        (ev.shock_bps == cfg["shock_bps"]) &
-        (ev.vshock == cfg["vshock"]) &
-        (ev.flow_abs == cfg["flow_abs"]) &
-        (ev.exhaust_ratio == cfg["exhaust_ratio"]) &
-        (ev.horizon_min == cfg["horizon_min"])
-    ].copy()
-    oos_ev = cev[cev.split == "oos"].copy()
-    if len(oos_ev):
-        sym = oos_ev.groupby("symbol").gross_bps.agg(["count","mean","median","sum"]).sort_values("sum", ascending=False).reset_index()
-        sym["net10_mean"] = sym["mean"] - TAKER_RT_BPS
-        sym.to_csv(OUT / "chosen_oos_by_symbol.csv", index=False)
-        max_count_share = float(sym["count"].max() / sym["count"].sum())
-        positive_sum = sym["sum"].clip(lower=0)
-        max_positive_pnl_share = float(positive_sum.max() / positive_sum.sum()) if positive_sum.sum() > 0 else np.nan
-    else:
-        sym = pd.DataFrame()
-        max_count_share = np.nan
-        max_positive_pnl_share = np.nan
+    chosen_sym = sres[
+        (sres.shock_bps == cfg["shock_bps"]) & (sres.vshock == cfg["vshock"]) &
+        (sres.flow_abs == cfg["flow_abs"]) & (sres.exhaust_ratio == cfg["exhaust_ratio"]) &
+        (sres.horizon_min == cfg["horizon_min"]) & (sres.split == "oos")
+    ].copy().sort_values("n", ascending=False)
+    chosen_sym.to_csv(OUT / "chosen_oos_by_symbol.csv", index=False)
+    max_count_share = float(chosen_sym.n.max() / chosen_sym.n.sum()) if len(chosen_sym) and chosen_sym.n.sum() else np.nan
 
-    oos_row = chosen_rows[chosen_rows.split == "oos"]
-    if len(oos_row):
-        rr = oos_row.iloc[0]
-        passed = bool(rr.n >= 100 and rr.mean_bps >= 20 and rr.median_bps > 0 and rr.net10_mean_bps >= 5 and (not np.isfinite(max_count_share) or max_count_share <= 0.30))
+    oos = chosen_rows[chosen_rows.split == "oos"]
+    if len(oos):
+        r = oos.iloc[0]
+        passed = bool(r.n >= 100 and r.mean_bps >= 20 and r.median_bps > 0 and r.net10_mean_bps >= 5 and (not np.isfinite(max_count_share) or max_count_share <= 0.30))
     else:
         passed = False
 
     summary = {
-        "strategy": "residual shock + flow exhaustion reversal",
-        "symbols_requested": SYMBOLS,
-        "train": "2025-H1",
-        "validation": "2025-H2",
-        "oos": "2026-01 through 2026-07",
-        "selection": "maximize robust min(train, validation) gross mean among configs with >=200 train and >=100 validation events",
-        "chosen": cfg,
-        "chosen_by_split": chosen_rows.replace({np.nan: None}).to_dict(orient="records"),
-        "oos_max_symbol_event_share": None if not np.isfinite(max_count_share) else max_count_share,
-        "oos_max_positive_pnl_share": None if not np.isfinite(max_positive_pnl_share) else max_positive_pnl_share,
-        "stage2_tick_execution_candidate": passed,
-        "pass_rule": "OOS n>=100, gross mean>=20bps, median>0, mean-10bps taker RT>=5bps, max symbol event share<=30%",
+        "strategy":"residual shock + flow exhaustion reversal",
+        "symbols":SYMBOLS,
+        "train":"2025-H1","validation":"2025-H2","oos":"2026-01 through 2026-07",
+        "chosen":cfg,
+        "chosen_by_split":chosen_rows.replace({np.nan:None}).to_dict(orient="records"),
+        "oos_max_symbol_event_share":None if not np.isfinite(max_count_share) else max_count_share,
+        "stage2_tick_execution_candidate":passed,
+        "pass_rule":"OOS n>=100, gross mean>=20bps, median>0, mean-10bps taker RT>=5bps, max symbol event share<=30%",
     }
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
@@ -345,10 +300,10 @@ def main():
     print(chosen_rows[show].to_string(index=False))
     print(f"\nOOS max symbol event share={max_count_share:.3f}" if np.isfinite(max_count_share) else "\nOOS max symbol event share=NA")
     print(f"STAGE2_TICK_EXECUTION_CANDIDATE={passed}")
-    if len(sym):
-        print("\n=== CHOSEN OOS BY SYMBOL (top 15 by cumulative gross bps) ===")
-        print(sym.head(15).to_string(index=False))
-    print("\nNOTE: gross forward close-to-close reversal returns are NOT executable PnL. net10_mean only subtracts the user's 10bps taker round trip; spread, latency and impact are not yet charged.")
+    if len(chosen_sym):
+        print("\n=== CHOSEN OOS BY SYMBOL (top event counts) ===")
+        print(chosen_sym[["symbol","n","mean_bps","median_bps","win","net10_mean_bps"]].head(20).to_string(index=False))
+    print("\nNOTE: forward close-to-close reversal returns are NOT executable PnL. net10_mean only subtracts the user's 10bps taker round trip; spread, latency and impact are not charged yet.")
 
 
 if __name__ == "__main__":
