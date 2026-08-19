@@ -1,0 +1,31 @@
+name: LeadLag BookTicker Backtest
+
+on:
+  push:
+    branches: ['chatgpt/leadlag-backtest']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install pandas numpy requests
+      - name: Run tick-level lead-lag backtest
+        run: python leadlag_bookticker_backtest.py | tee leadlag_backtest.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: leadlag-bookticker-results
+          path: |
+            leadlag_output/
+            leadlag_backtest.log
+          retention-days: 7
