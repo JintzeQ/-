@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f crowding_unwind_screen.py ]; then
+          if [ -f crowding_unwind_runner.py ]; then
+            python crowding_unwind_runner.py | tee crowding_unwind.log
+          elif [ -f crowding_unwind_screen.py ]; then
             python crowding_unwind_screen.py | tee crowding_unwind.log
           elif [ -f trapped_flow_reversal_tick_exec_runner.py ]; then
             python trapped_flow_reversal_tick_exec_runner.py | tee trapped_flow_reversal_tick_exec.log
