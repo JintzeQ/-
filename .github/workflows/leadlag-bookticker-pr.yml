@@ -20,7 +20,9 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          if [ -f crowding_unwind_runner.py ]; then
+          if [ -f cross_sectional_rv_screen.py ]; then
+            python cross_sectional_rv_screen.py | tee cross_sectional_rv.log
+          elif [ -f crowding_unwind_runner.py ]; then
             python crowding_unwind_runner.py | tee crowding_unwind.log
           elif [ -f crowding_unwind_screen.py ]; then
             python crowding_unwind_screen.py | tee crowding_unwind.log
@@ -43,6 +45,8 @@ jobs:
         with:
           name: pr-backtest-results
           path: |
+            cross_sectional_rv_output/
+            cross_sectional_rv.log
             crowding_unwind_output/
             crowding_unwind.log
             trapped_flow_reversal_tick_output/
